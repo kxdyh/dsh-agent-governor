@@ -179,8 +179,56 @@ matchRules(rules, { text, textFor, contextOf, config })
    调用放行但 `shadowed+1`、`lastShadow.rule` 指向该规则。
 5. 关掉整个 bundle → 系统提示里的 DOL 段落消失，证明注入来自本插件而非其它插件。
 
-## 发布
+## 发布（社区插件）
 
-和所有 dsh 插件一样：仓库打 `dsh-plugin` topic，`package.json` 保留 `dsh-plugin` 关键词，
-`pnpm publish --registry https://registry.npmjs.org`（scoped 包已设 `publishConfig.access = public`）。
+### 1. GitHub
+
+`package.json` 里已经写好 `repository` / `homepage` / `bugs`，仓库地址约定为
+`https://github.com/kxdyh/dsh-agent-governor`。首次推送：
+
+```bash
+git remote add origin https://github.com/kxdyh/dsh-agent-governor.git
+git push -u origin main
+```
+
+- 仓库 **topics** 打上：`dsh-plugin`、`deepseek-harness`、`cordis`、`plugin`、`guardrail`、`agent-safety`
+  （社区一般按 `dsh-plugin` 话题/关键词检索收录）。
+- 发一个 **Release**，把 `kxdyh-dsh-agent-governor-1.0.0.tgz` 作为附件 —— 用户拿到 tgz 就能装，不必等 npm。
+
+### 2. npm（可选但推荐）
+
+```bash
+pnpm publish --access public --registry https://registry.npmjs.org
+```
+
+注意：`registry.npmmirror.com` 这类**只读镜像发不上去**，必须显式指定官方源；
+scoped 包已设 `publishConfig.access = public`。
+
+### 3. 四种安装方式（都可用）
+
+| 方式 | 命令 | 适用 |
+|---|---|---|
+| 本地目录 | `dsh plugin add E:\deepseek\dsh-agent-governor` | 开发（本机就是 `link:` 安装） |
+| 发布产物 | `dsh plugin add ./kxdyh-dsh-agent-governor-1.0.0.tgz` | 不想发布时的分发 |
+| npm 包名 | `dsh plugin add @kxdyh/dsh-agent-governor` | 发布之后 |
+| GitHub | `dsh plugin add github:kxdyh/dsh-agent-governor` | 只发了 GitHub |
+
+装好后：客户端半部分刷新页面即可见；**宿主半部分需要重启应用**（原因见上文"改完怎么生效"）。
+
+### 4. 发布前自检清单（本仓库已全部通过）
+
+- [x] `npm test` → 44 宿主 + 18 客户端，全绿
+- [x] `npm pack` 后**解包再跑一次测试** → 证明产物自包含（13 个文件，含 DEMO.md/DEVELOPING.md）
+- [x] `npm install --dry-run <tgz>` → 可被解析安装
+- [x] `cordis.patch.yml` 的 `name` 与 `package.json` 的 `name` 完全一致
+- [x] `client.js` 的 `__ModuleLoader__.load({ id })` 等于包名
+- [x] 无出网依赖：宿主只 import `node:fs`/`node:os`/`node:path`，不调用任何模型
+
+### 5. 发布产物（`E:\deepseek\dsh-agent-governor-dist\`）
+
+| 文件 | 说明 |
+|---|---|
+| `kxdyh-dsh-agent-governor-1.0.0.tgz` | npm/GitHub Release 用；`dsh plugin add` 可直接吃 |
+| `kxdyh-dsh-agent-governor-1.0.0-src.zip` | `git archive HEAD` 生成的源码快照（不含 `.git`） |
+
 `.tgz` 与 `github:user/repo` 两种形式同样可安装。
