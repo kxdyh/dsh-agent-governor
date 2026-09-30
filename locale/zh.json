@@ -1,0 +1,8 @@
+{
+  "name": "Agent 治理 · 双层拦截",
+  "trigger": "拦截层：DOL 通信语义治理 · Sentinel 工具执行治理",
+  "dol": "DOL 层 · 通信语义治理：校验 agent 说什么",
+  "sentinel": "Sentinel 层 · 工具执行治理：校验 agent 做什么",
+  "shadow": "影子模式（只记录，不拦截）",
+  "note": "两层共用同一个证据缓存：DOL 管“说什么”，Sentinel 管“做什么”。"
+}

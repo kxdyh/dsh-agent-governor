@@ -1,0 +1,8 @@
+{
+  "name": "Agent Governor · two layers",
+  "trigger": "Interception layers: DOL communication semantics · Sentinel tool execution",
+  "dol": "DOL layer · communication semantics: audits what the agent says",
+  "sentinel": "Sentinel layer · tool execution: audits what the agent does",
+  "shadow": "Shadow mode (record only, never block)",
+  "note": "Both layers share one evidence cache: DOL governs what is said, Sentinel what is done."
+}

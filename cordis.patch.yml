@@ -1,0 +1,11 @@
+# Bundle layer: mount the two interception layers.
+#
+# `config` here is only the seed; the live switches are written by the plugin
+# itself to <dsh-home>/storages/agent-governor.json, so a profile reload keeps
+# whatever the user last chose in the header panel.
+- insert:
+    - id: agent-governor
+      name: '@kxdyh/dsh-agent-governor'
+      config:
+        dol: true
+        sentinel: true

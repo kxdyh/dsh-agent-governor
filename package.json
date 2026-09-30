@@ -1,0 +1,63 @@
+{
+  "name": "@kxdyh/dsh-agent-governor",
+  "version": "1.0.0",
+  "description": "Two interception layers for DeepSeek Harness agents: a DOL communication-semantics layer and a Sentinel tool-execution layer, each independently switchable from the conversation header.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "dsh",
+    "cordis",
+    "plugin",
+    "governance",
+    "guardrail",
+    "deontic",
+    "evidence",
+    "agent-safety"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kxdyh/dsh-agent-governor.git"
+  },
+  "homepage": "https://github.com/kxdyh/dsh-agent-governor#readme",
+  "bugs": {
+    "url": "https://github.com/kxdyh/dsh-agent-governor/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "test/*.mjs",
+    "README.md",
+    "DEVELOPING.md",
+    "DEMO.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node test/host.test.mjs && node test/client.test.mjs",
+    "pack:check": "npm pack --dry-run"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ]
+    }
+  }
+}
